@@ -16,8 +16,8 @@
 -- existing `foundit` database so no old tables/migrations can interfere.
 -- BACK UP ANY DATA YOU WANT TO KEEP BEFORE RUNNING THIS FILE.
 
-DROP DATABASE IF EXISTS foundit;
-CREATE DATABASE foundit CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+DROP DATABASE IF EXISTS foundi;
+CREATE DATABASE foundi; CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE foundit;
 
 -- Students use 6-digit IDs. Account data is intentionally separated from
