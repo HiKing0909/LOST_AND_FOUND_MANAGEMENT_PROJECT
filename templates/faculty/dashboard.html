@@ -1,0 +1,193 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Faculty / Staff Dashboard{% endblock %}
+{% block footer_title %}Faculty / Staff Dashboard{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='shared/css/report_lost_item.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='shared/css/submissions_panel.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='faculty/css/faculty.css') }}">
+{% endblock %}
+
+{% block navigation %}
+  <div class="sidebar-section-label">WORKSPACE</div>
+  <nav class="nav nav-main">
+    <a href="#dashboard" class="nav-link active" id="dashboard-nav" aria-current="page"><span class="nav-icon"><img src="{{ url_for('static', filename='shared/images/home_icon.png') }}" alt=""></span><span>Dashboard</span></a>
+    <a href="#report-lost-item" class="nav-link" id="report-lost-nav"><span class="nav-icon"><img src="{{ url_for('static', filename='shared/images/lost_icon.png') }}" alt=""></span><span>Report Lost Item</span></a>
+    <a href="#report-found-item" class="nav-link" id="report-found-nav"><span class="nav-icon"><img src="{{ url_for('static', filename='shared/images/found_icon.png') }}" alt=""></span><span>Report Found Item</span></a>
+    <a href="#my-submissions" class="nav-link" id="my-submissions-nav"><span class="nav-icon"><img src="{{ url_for('static', filename='shared/images/submission_icon.png') }}" alt=""></span><span>My Submissions</span></a>
+    <a href="#verify-report" class="nav-link" id="verify-report-nav"><span class="nav-icon"><img src="{{ url_for('static', filename='shared/images/verify_icon.png') }}" alt=""></span><span>Verify Report</span><span class="nav-badge" id="verify-nav-count">0</span></a>
+    <a href="#manage-claims" class="nav-link" id="manage-claims-nav"><span class="nav-icon"><img src="{{ url_for('static', filename='shared/images/claim_icon.png') }}" alt=""></span><span>Manage Claims</span><span class="nav-badge" id="claims-nav-count">0</span></a>
+  </nav>
+
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section-label">COMMUNICATION</div>
+  <nav class="nav nav-secondary">
+    <a href="#messages" class="nav-link" id="messages-nav"><span class="nav-icon"><img src="{{ url_for('static', filename='shared/images/message_icon.png') }}" alt=""></span><span>Messages</span><span class="nav-badge" id="messages-nav-count">0</span></a>
+    <a href="#notifications" class="nav-link" id="notifications-nav"><span class="nav-icon"><img src="{{ url_for('static', filename='shared/images/notification_icon.png') }}" alt=""></span><span>Notifications</span><span class="nav-badge" id="notifications-nav-count">0</span></a>
+  </nav>
+{% endblock %}
+
+{% block views %}
+  <section class="dashboard-view" id="dashboard-view">
+    <section class="page-intro">
+      <div>
+        <div class="breadcrumbs"><span>Workspace</span><span class="breadcrumb-slash">/</span><strong>Dashboard</strong></div>
+        <h1>Faculty / Staff Dashboard</h1>
+        <p class="page-subtitle">Monitor reports, verify student submissions, manage claims, and communicate with users.</p>
+      </div>
+    </section>
+
+    <section class="notice" aria-label="Faculty and Staff responsibilities">
+      <div class="notice-icon" aria-hidden="true">i</div>
+      <div class="notice-content">
+        <div class="notice-heading-row"><h2>Faculty / Staff responsibilities</h2><span class="notice-tag">STAFF WORKSPACE</span></div>
+        <p>Use this workspace to review student reports, verify valid lost-item reports, process claim requests, and keep users updated.</p>
+        <p>Lost-item reports are stored in the FoundIT database for reliable access across sessions.</p>
+      </div>
+    </section>
+
+    <section class="stats-section" aria-label="Faculty and Staff item summary">
+      <div class="section-heading"><div><h2>Overview</h2><p>Current activity requiring attention</p></div></div>
+      <div class="stats-grid staff-stats-grid">
+        <article class="stat-card lost-stat">
+          <div class="stat-card-top"><div class="stat-icon"><img src="{{ url_for('static', filename='shared/images/lost_icon.png') }}" alt=""></div><span class="stat-category">LOST ITEMS</span></div>
+          <div class="stat-number" id="dashboard-lost-count">{{ stats.lost }}</div>
+          <div class="stat-bottom"><span class="stat-label">Verified / available lost items</span><span class="stat-arrow" aria-hidden="true">↗</span></div>
+        </article>
+        <article class="stat-card found-stat">
+          <div class="stat-card-top"><div class="stat-icon"><img src="{{ url_for('static', filename='shared/images/found_icon.png') }}" alt=""></div><span class="stat-category">FOUND ITEMS</span></div>
+          <div class="stat-number" id="dashboard-found-count">{{ stats.found }}</div>
+          <div class="stat-bottom"><span class="stat-label">Found items recorded</span><span class="stat-arrow" aria-hidden="true">↗</span></div>
+        </article>
+        <article class="stat-card staff-stat">
+          <div class="stat-card-top"><div class="stat-icon"><img src="{{ url_for('static', filename='shared/images/verify_icon.png') }}" alt=""></div><span class="stat-category">PENDING REPORTS</span></div>
+          <div class="stat-number" id="dashboard-pending-reports">{{ stats.pending_reports }}</div>
+          <div class="stat-bottom"><span class="stat-label">Student reports to verify</span><span class="stat-arrow" aria-hidden="true">→</span></div>
+        </article>
+        <article class="stat-card staff-stat">
+          <div class="stat-card-top"><div class="stat-icon"><img src="{{ url_for('static', filename='shared/images/claim_icon.png') }}" alt=""></div><span class="stat-category">PENDING CLAIMS</span></div>
+          <div class="stat-number" id="dashboard-pending-claims">{{ stats.pending_claims }}</div>
+          <div class="stat-bottom"><span class="stat-label">Claims awaiting review</span><span class="stat-arrow" aria-hidden="true">→</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="recent-section">
+      <div class="section-heading recent-heading">
+        <div><h2>Recently posted</h2><p>The latest activity from your lost and found board.</p></div>
+        <div class="recent-heading-tools">
+          <label class="recent-search" for="dashboard-recent-search">
+            <span class="sr-only">Search recently posted items by name or location</span>
+            <span class="recent-search-icon" aria-hidden="true">⌕</span>
+            <input id="dashboard-recent-search" type="search" placeholder="Search item or location" autocomplete="off">
+          </label>
+          <span class="item-count" id="dashboard-recent-count">0 items</span>
+        </div>
+      </div>
+      <div class="recent-list" id="dashboard-recent-list"></div>
+    </section>
+  </section>
+
+  {% with report_subtitle="Provide the details below so the lost item can be documented and reviewed by Faculty / Staff.",
+          report_info="Please provide enough details about the item to help Faculty / Staff properly review and identify it." %}
+    {% include "partials/report_lost_item_form.html" %}
+  {% endwith %}
+  {% include "faculty/report_found_item_form.html" %}
+
+  <section class="submissions-page" id="my-submissions" aria-labelledby="my-submissions-title" hidden>
+    <div class="page-intro">
+      <div>
+        <div class="breadcrumbs"><span>Workspace</span><span class="breadcrumb-slash">/</span><strong>My Submissions</strong></div>
+        <h1 id="my-submissions-title">My Submissions</h1>
+        <p class="page-subtitle">Review and manage the lost and found reports you have submitted.</p>
+      </div>
+    </div>
+    <div class="submissions-card">
+      <div class="submissions-heading">
+        <div><h2>Your reported items</h2><p>Reports are saved securely in the FoundIT database.</p></div>
+        <span class="item-count" id="submission-count">0 items</span>
+      </div>
+      <div id="submissions-list" class="submissions-list" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="staff-page" id="verify-report" aria-labelledby="verify-report-title" hidden>
+    <div class="page-intro">
+      <div>
+        <div class="breadcrumbs"><span>Workspace</span><span class="breadcrumb-slash">/</span><strong>Verify Report</strong></div>
+        <h1 id="verify-report-title">Verify Report</h1>
+        <p class="page-subtitle">Review student lost-item reports and verify or reject them.</p>
+      </div>
+      <span class="communication-count" id="verify-report-count">0 pending</span>
+    </div>
+    <div class="staff-card">
+      <div class="staff-card-heading">
+        <div><h2>Student lost-item requests</h2><p>Only reports submitted from the student dashboard are shown here.</p></div>
+      </div>
+      <div class="review-list" id="verify-list" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="staff-page" id="manage-claims" aria-labelledby="manage-claims-title" hidden>
+    <div class="page-intro">
+      <div>
+        <div class="breadcrumbs"><span>Workspace</span><span class="breadcrumb-slash">/</span><strong>Manage Claims</strong></div>
+        <h1 id="manage-claims-title">Manage Claims</h1>
+        <p class="page-subtitle">Review claim requests, track approved claims, and record when verified items are returned to their owners.</p>
+      </div>
+      <span class="communication-count" id="manage-claims-count">0 pending</span>
+    </div>
+
+    <div class="staff-card claim-workflow-card">
+      <div class="staff-card-heading">
+        <div><h2>Pending Claim Requests</h2><p>These requests are waiting for Faculty / Staff review. Accepting a request moves it to Approved Claims.</p></div>
+      </div>
+      <div class="review-list" id="claims-list" aria-live="polite"></div>
+    </div>
+
+    <div class="staff-card claim-workflow-card claim-section-approved">
+      <div class="staff-card-heading">
+        <div><h2>Approved Claims</h2><p>An approved claim means the claimant is authorized to receive the item. Mark it as returned only after the physical handover is completed.</p></div>
+        <span class="claim-section-label approved">APPROVED</span>
+      </div>
+      <div class="review-list" id="approved-claims-list" aria-live="polite"></div>
+    </div>
+
+    <div class="staff-card claim-workflow-card claim-section-returned">
+      <div class="staff-card-heading">
+        <div><h2>Returned Claims</h2><p>Completed returns remain here as a record. Each returned claim has a printable return receipt.</p></div>
+        <span class="claim-section-label returned">RETURNED</span>
+      </div>
+      <div class="returned-claims-toolbar">
+        <input id="returned-claims-search" type="search" placeholder="Search receipt no., item, or claimant" autocomplete="off" aria-label="Search returned claims">
+      </div>
+      <div class="review-list" id="returned-claims-list" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <div class="action-notice-overlay" id="faculty-action-confirm" hidden role="dialog" aria-modal="true" aria-labelledby="faculty-action-confirm-title" aria-describedby="faculty-action-confirm-message">
+    <div class="action-notice-modal">
+      <div class="action-notice-icon" id="faculty-action-confirm-icon" aria-hidden="true">?</div>
+      <h2 id="faculty-action-confirm-title">Confirm Action</h2>
+      <p id="faculty-action-confirm-message"></p>
+      <div class="action-notice-actions">
+        <button type="button" class="secondary-action" id="faculty-action-confirm-cancel">Cancel</button>
+        <button type="button" class="primary-action" id="faculty-action-confirm-proceed">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  {% with root="Workspace", with_compose=true,
+          messages_subtitle="Read messages and send messages to any active user using their school email.",
+          notifications_subtitle="A record of the reviews you have completed as Faculty / Staff.",
+          notifications_heading="Staff notifications",
+          notifications_help="Reports and claim requests you have verified, accepted, or rejected are recorded here." %}
+    {% include "partials/communication_panels.html" %}
+  {% endwith %}
+{% endblock %}
+
+{% block scripts %}
+  {% with with_compose=true %}{% include "partials/message_modals.html" %}{% endwith %}
+  <script src="{{ url_for('static', filename='faculty/js/faculty.js') }}"></script>
+{% endblock %}

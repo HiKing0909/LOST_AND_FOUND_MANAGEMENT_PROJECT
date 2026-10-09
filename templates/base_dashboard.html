@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#b20f1b">
+  <title>FoundIT | {% block title %}Dashboard{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='shared/css/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='shared/css/communication_panels.css') }}">
+  {% block styles %}{% endblock %}
+</head>
+<body
+  data-user-account-id="{{ user.account_id }}"
+  data-user-name="{{ user.name }}"
+  data-user-email="{{ user.email }}"
+  data-user-role="{{ user.role_label }}"
+>
+  <div class="app-shell" id="app-shell">
+    <aside class="sidebar" id="main-sidebar" aria-label="{{ user.role_label }} navigation">
+      <div class="brand-block">
+        <div class="brand-logo-wrap"><img class="brand-logo" src="{{ url_for('static', filename='shared/images/horizontal_dashboard.png') }}" alt="FoundIT logo"></div>
+        <div class="brand-copy"><span class="brand-caption">Lost and Found System</span></div>
+        <img class="brand-logo-vertical" src="{{ url_for('static', filename='shared/images/vertical_dashboard.png') }}" alt="" aria-hidden="true">
+      </div>
+
+      <div class="sidebar-scroll">
+        {% block navigation %}{% endblock %}
+      </div>
+
+      <div class="sidebar-footer" id="profile-footer">
+        <button class="profile-trigger" id="profile-trigger" type="button" aria-expanded="false" aria-controls="profile-menu">
+          <span class="profile-avatar" id="sidebar-profile-avatar">
+            <span class="profile-avatar-fallback">{{ user.initials }}</span>
+            <img id="sidebar-profile-photo" src="{{ url_for('get_profile_photo') }}" alt="" hidden>
+          </span>
+          <span class="profile-details">
+            <span class="profile-name">{{ user.name }}</span>
+            <span class="profile-role">{{ user.role_label }}</span>
+          </span>
+          <span class="profile-menu-mark" aria-hidden="true">⌄</span>
+        </button>
+        <div class="profile-menu-dropdown" id="profile-menu" hidden>
+          <button type="button" class="profile-menu-item" id="my-profile-button">
+            <span aria-hidden="true">◉</span><span>My Profile</span>
+          </button>
+          <a class="profile-menu-item" href="{{ url_for('logout') }}">
+            <span aria-hidden="true">↪</span><span>Logout</span>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-controls="main-sidebar" aria-expanded="true" aria-label="Collapse sidebar" title="Collapse sidebar">
+            <img src="{{ url_for('static', filename='shared/images/menu_icon.png') }}" alt="">
+          </button>
+        </div>
+        <div class="topbar-right">
+          <div class="live-datetime" aria-label="Current date and time">
+            <span class="calendar-icon" aria-hidden="true">
+              <span class="calendar-top"></span>
+              <span class="calendar-grid"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            </span>
+            <span id="current-date">Loading date...</span>
+            <span class="datetime-divider" aria-hidden="true"></span>
+            <span id="current-time">Loading time...</span>
+          </div>
+        </div>
+      </header>
+
+      <div id="view-root">
+        {% block views %}{% endblock %}
+      </div>
+
+      <div class="profile-modal" id="profile-modal" hidden>
+        <div class="profile-modal-backdrop" data-profile-close></div>
+        <section class="profile-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="profile-modal-title">
+          <button type="button" class="profile-modal-close" data-profile-close aria-label="Close profile">×</button>
+          <div class="profile-modal-header">
+            <div>
+              <div class="breadcrumbs"><span>Account</span><span class="breadcrumb-slash">/</span><strong>My Profile</strong></div>
+              <h2 id="profile-modal-title">My Profile</h2>
+              <p>View your account information and personalize your profile picture.</p>
+            </div>
+          </div>
+          <div class="profile-modal-body">
+            <div class="profile-identity-card">
+              <div class="profile-large-avatar" id="profile-large-avatar">
+                <span id="profile-large-avatar-fallback">{{ user.initials }}</span>
+                <img id="profile-large-photo" src="{{ url_for('get_profile_photo') }}" alt="Profile picture" hidden>
+              </div>
+              <div class="profile-picture-actions">
+                <strong id="profile-display-name">{{ user.name }}</strong>
+                <span id="profile-display-role">{{ user.role_label }}</span>
+                <label class="profile-upload-button" for="profile-picture-input">Add / Change Picture</label>
+                <input id="profile-picture-input" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+                <small>JPG, PNG, or WEBP · maximum 2 MB</small>
+                <div id="profile-upload-status" class="profile-upload-status" aria-live="polite"></div>
+              </div>
+            </div>
+
+            <div class="profile-detail-section">
+              <div class="profile-detail-heading"><h3>Personal Information</h3></div>
+              <div class="profile-detail-grid">
+                <div><span>Full Name</span><strong id="profile-full-name">—</strong></div>
+                <div><span>Account ID</span><strong id="profile-account-id">—</strong></div>
+                <div><span>Email</span><strong id="profile-email">—</strong></div>
+                <div><span>Role</span><strong id="profile-role">—</strong></div>
+              </div>
+            </div>
+
+            <div class="profile-detail-section">
+              <div class="profile-detail-heading"><h3>Account Information</h3></div>
+              <div class="profile-detail-grid">
+                <div><span>Status</span><strong id="profile-status">—</strong></div>
+                <div><span>Date Registered</span><strong id="profile-created">—</strong></div>
+              </div>
+            </div>
+
+            <div class="profile-detail-section profile-security-section">
+              <div class="profile-detail-heading"><h3>Security</h3></div>
+              <div class="profile-security-note">
+                <div><span>Password</span><strong>••••••••••••</strong></div>
+                <p>Your password is protected and cannot be changed from your profile.</p>
+              </div>
+            </div>
+          </div>
+          <div class="profile-modal-footer">
+            <button type="button" class="secondary-action" data-profile-close>Close</button>
+          </div>
+        </section>
+      </div>
+
+      <footer class="page-footer">
+        <span>FoundIT · {% block footer_title %}Lost and Found System{% endblock %}</span>
+        <span>Helping items find their way home.</span>
+      </footer>
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', filename='shared/js/dashboard_common.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

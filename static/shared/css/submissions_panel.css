@@ -1,0 +1,36 @@
+.submissions-page[hidden]{display:none!important}
+.submissions-card{padding:24px;border:1px solid #e9ebef;border-radius:var(--radius-card);background:var(--surface);box-shadow:var(--shadow-card)}
+.submissions-heading{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:18px}
+.submissions-heading h2{font-size:20px;font-weight:700;letter-spacing:-.35px}
+.submissions-heading p{margin-top:5px;color:var(--muted);font-size:15px}
+.submissions-list{display:grid;gap:12px}
+.submission-empty{min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#858d97}
+.submission-empty strong{color:#303640;font-size:17px}
+.submission-empty p{max-width:400px;margin-top:7px;font-size:15px;line-height:1.6}
+
+/* Shared My Submissions card style — used by Student and Faculty/Staff */
+.submission-item{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:16px;border:1px solid #e9ebef;border-radius:11px;background:#fff}
+.submission-item h3{color:#303640;font-size:17px;font-weight:700}
+.submission-meta{margin-top:5px;color:#858d97;font-size:14px;line-height:1.6}
+.submission-description{margin-top:8px;color:#68717c;font-size:15px;line-height:1.5;white-space:pre-wrap}
+
+/* Status badges are shared so Student matches Faculty/Staff exactly. */
+.status-badge{display:inline-flex;align-items:center;margin-top:10px;padding:5px 11px;border-radius:999px;font-size:12px;font-weight:800;line-height:1}
+.status-badge.pending{background:#fff7df;color:#9b7410}
+.status-badge.verified,.status-badge.accepted{background:#eaf8f1;color:#19764c}
+.status-badge.rejected{background:#fff0f1;color:var(--brand-red)}
+
+.submission-actions{display:flex;flex-shrink:0;gap:7px}
+.submission-actions button{padding:10px 15px;border:1px solid #dfe3e8;border-radius:7px;background:#fff;color:#555e69;cursor:pointer;font:600 14px Inter,sans-serif}
+.submission-actions button:hover{background:#f7f8fa}
+.submission-actions .delete-submission{color:var(--brand-red);border-color:#f0d5d8}
+
+/* Database-backed lost-item photos */
+.submission-photo,.review-photo{display:block;width:min(220px,100%);max-height:220px;margin-top:12px;border:1px solid #e5e8ec;border-radius:9px;object-fit:cover}
+
+@media(max-width:760px){
+  .submissions-card{padding:18px}
+  .submission-item{flex-direction:column}
+  .submission-actions{width:100%}
+  .submission-actions button{flex:1}
+}

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FoundIT Create Account — UM Tagum Campus Lost and Found System">
+  <title>FoundIT | Create Account</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='auth/auth.css') }}">
+</head>
+<body class="auth-page auth-page-register">
+  <main class="auth-shell">
+    <section class="brand-panel" aria-label="FoundIT information">
+      <div class="brand-panel-inner">
+        <img class="foundit-logo" src="{{ url_for('static', filename='auth/assets/horizontal_logo.png') }}" alt="FoundIT Campus Lost and Found System">
+        <span class="eyebrow">UM Tagum Campus</span>
+        <h1>Join the campus lost-and-found community.</h1>
+        <p>Create a student or faculty/staff account to use FoundIT. Public administrator registration is intentionally not included.</p>
+      </div>
+    </section>
+
+    <section class="auth-card auth-card-register" aria-labelledby="register-title">
+      <div class="card-glow" aria-hidden="true"></div>
+      <div class="auth-card-content">
+        <div class="mobile-brand">
+          <img src="{{ url_for('static', filename='auth/assets/horizontal_logo.png') }}" alt="FoundIT">
+          <span>UM Tagum Campus</span>
+        </div>
+
+        <div class="auth-heading">
+          <span class="section-label">GET STARTED</span>
+          <h2 id="register-title">Create Account</h2>
+          <p>Register with your official UMindanao school information.</p>
+        </div>
+
+        <form class="auth-form" id="register-form" data-action="{{ url_for('create_account_submit') }}" novalidate>
+          <div class="field-group">
+            <label for="register-role">Account Type</label>
+            <div class="select-wrap">
+              <select id="register-role" name="role">
+                <option value="student">Student</option>
+                <option value="faculty_staff">Faculty / Staff</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="register-id" id="register-id-label">Student ID</label>
+            <div class="input-wrap">
+              <span class="input-icon" aria-hidden="true">#</span>
+              <input id="register-id" name="school_id" type="text" inputmode="numeric" autocomplete="off"
+                     placeholder="6-digit Student ID" maxlength="6" required>
+            </div>
+            <small class="field-hint" id="register-id-hint">Student ID must contain exactly 6 digits.</small>
+            <small class="field-message" data-message-for="register-id"></small>
+          </div>
+
+          <div class="field-row">
+            <div class="field-group">
+              <label for="register-first-name">First Name</label>
+              <input class="plain-input" id="register-first-name" name="first_name" type="text" autocomplete="given-name" placeholder="First name" required>
+              <small class="field-message" data-message-for="register-first-name"></small>
+            </div>
+            <div class="field-group">
+              <label for="register-last-name">Last Name</label>
+              <input class="plain-input" id="register-last-name" name="last_name" type="text" autocomplete="family-name" placeholder="Last name" required>
+              <small class="field-message" data-message-for="register-last-name"></small>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="register-email">School Email</label>
+            <div class="input-wrap">
+              <span class="input-icon" aria-hidden="true">@</span>
+              <input id="register-email" name="email" type="email" autocomplete="email"
+                     placeholder="firstname.lastname.123456.tc@umindanao.edu.ph" required>
+            </div>
+            <small class="field-hint">The ID inside the school email must match the ID above.</small>
+            <small class="field-message" data-message-for="register-email"></small>
+          </div>
+
+          <div class="field-row">
+            <div class="field-group">
+              <label for="register-password">Password</label>
+              <div class="input-wrap">
+                <input id="register-password" name="password" type="password" autocomplete="new-password"
+                       placeholder="Minimum 8 characters" required>
+                <button class="password-toggle" type="button" data-toggle-password="register-password" aria-label="Show password">Show</button>
+              </div>
+              <small class="field-message" data-message-for="register-password"></small>
+            </div>
+            <div class="field-group">
+              <label for="register-confirm-password">Confirm Password</label>
+              <div class="input-wrap">
+                <input id="register-confirm-password" type="password" autocomplete="new-password"
+                       placeholder="Repeat password" required>
+                <button class="password-toggle" type="button" data-toggle-password="register-confirm-password" aria-label="Show password">Show</button>
+              </div>
+              <small class="field-message" data-message-for="register-confirm-password"></small>
+            </div>
+          </div>
+
+          <button class="primary-button" type="submit">Create Account</button>
+          <p class="form-status" id="register-status" role="status" aria-live="polite"></p>
+        </form>
+
+        <div class="auth-switch">
+          <span>Already have an account?</span>
+          <a href="{{ url_for('login') }}">Login</a>
+        </div>
+
+        <p class="demo-note">Student accounts activate immediately. Faculty / Staff accounts remain pending until an administrator activates them.</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='auth/auth.js') }}" defer></script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+{# Message viewer, plus the compose dialog when `with_compose` is true. #}
+{% if with_compose %}
+<div class="modal" id="compose-modal" hidden>
+  <div class="modal-backdrop"></div>
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="compose-title">
+    <div class="modal-header">
+      <div><span class="modal-eyebrow">NEW MESSAGE</span><h2 id="compose-title">Compose Message</h2></div>
+      <button type="button" class="modal-close" data-close-modal="compose-modal" aria-label="Close">×</button>
+    </div>
+    <form id="compose-message-form" class="compose-form">
+      <div class="compose-grid">
+        <label>Recipient<input id="message-recipient" name="recipient" type="email" placeholder="user.firstname.lastname.123456.tc@umindanao.edu.ph" required maxlength="255"></label>
+        <label class="compose-full">Subject<input name="subject" type="text" placeholder="Subject" maxlength="160" required></label>
+        <label class="compose-full">Message<textarea name="body" rows="7" placeholder="Write your message..." maxlength="3000" required></textarea></label>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="secondary-action" data-close-modal="compose-modal">Cancel</button>
+        <button type="submit" class="primary-action">Send Message</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endif %}
+
+<div class="modal" id="message-modal" hidden>
+  <div class="modal-backdrop"></div>
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="message-modal-title">
+    <div class="modal-header">
+      <div>
+        <span class="modal-eyebrow">MESSAGE</span>
+        <h2 id="message-modal-title">No subject</h2>
+        <p id="message-modal-meta" class="modal-meta"></p>
+      </div>
+      <button type="button" class="modal-close" data-close-modal="message-modal" aria-label="Close">×</button>
+    </div>
+    <div id="message-modal-body" class="message-modal-body"></div>
+    <form id="reply-message-form" class="reply-form" hidden>
+      <div class="reply-composer-card">
+        <div class="reply-composer-heading">
+          <div class="reply-composer-icon" aria-hidden="true">↩</div>
+          <div class="reply-composer-copy">
+            <span class="reply-composer-label">REPLYING TO</span>
+            <strong id="reply-recipient-name">User</strong>
+            <span>Send a direct response to this message.</span>
+          </div>
+          <span class="reply-character-count" id="reply-character-count">0 / 3000</span>
+        </div>
+        <label class="reply-field">
+          <span>Your reply</span>
+          <textarea id="reply-message-body" name="body" rows="6" placeholder="Write a clear and helpful reply..." maxlength="3000" required></textarea>
+          <small>Keep your reply clear, respectful, and easy to understand.</small>
+        </label>
+      </div>
+      <div class="modal-actions reply-modal-actions">
+        <button type="button" class="secondary-action" id="reply-cancel-button">Cancel Reply</button>
+        <button type="submit" class="primary-action"><span aria-hidden="true">↗</span> Send Reply</button>
+      </div>
+    </form>
+    <div class="modal-actions" id="message-view-actions">
+      <button type="button" class="secondary-action" data-close-modal="message-modal">Close</button>
+      <button type="button" class="primary-action" id="message-reply-button"><span aria-hidden="true">↩</span> Reply</button>
+    </div>
+  </div>
+</div>

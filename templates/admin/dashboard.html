@@ -1,0 +1,283 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+{% block footer_title %}Admin Dashboard{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin.css') }}">
+{% endblock %}
+
+{% block navigation %}
+  <div class="sidebar-section-label">ADMIN WORKSPACE</div>
+  <nav class="nav nav-main">
+    <a href="#dashboard" class="nav-link active" id="dashboard-nav" aria-current="page"><span class="nav-icon"><img src="{{ url_for('static', filename='shared/images/home_icon.png') }}" alt=""></span><span>Dashboard</span></a>
+    <a href="#manage-accounts" class="nav-link" id="accounts-nav"><span class="nav-icon"><img src="{{ url_for('static', filename='shared/images/manage_icon.png') }}" alt=""></span><span>Manage Accounts</span><span class="nav-badge" id="accounts-nav-count">0</span></a>
+    <a href="#manage-items" class="nav-link" id="items-nav"><span class="nav-icon"><img src="{{ url_for('static', filename='shared/images/item_icon.png') }}" alt=""></span><span>Manage Items</span><span class="nav-badge" id="items-nav-count">0</span></a>
+    <a href="#manage-categories" class="nav-link" id="categories-nav"><span class="nav-icon"><img src="{{ url_for('static', filename='shared/images/item_icon.png') }}" alt=""></span><span>Manage Categories</span><span class="nav-badge" id="categories-nav-count">0</span></a>
+    <a href="#audit-log" class="nav-link" id="audit-nav"><span class="nav-icon"><img src="{{ url_for('static', filename='shared/images/audit_icon.png') }}" alt=""></span><span>Audit Log</span><span class="nav-badge" id="audit-nav-count">0</span></a>
+  </nav>
+
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section-label">COMMUNICATION</div>
+  <nav class="nav nav-secondary">
+    <a href="#messages" class="nav-link" id="messages-nav"><span class="nav-icon"><img src="{{ url_for('static', filename='shared/images/message_icon.png') }}" alt=""></span><span>Messages</span><span class="nav-badge" id="messages-nav-count">0</span></a>
+    <a href="#notifications" class="nav-link" id="notifications-nav"><span class="nav-icon"><img src="{{ url_for('static', filename='shared/images/notification_icon.png') }}" alt=""></span><span>Notifications</span><span class="nav-badge" id="notifications-nav-count">0</span></a>
+  </nav>
+{% endblock %}
+
+{% block views %}
+  <section class="admin-page" id="dashboard-view">
+    <div class="page-intro">
+      <div>
+        <div class="breadcrumbs"><span>Admin Workspace</span><span class="breadcrumb-slash">/</span><strong>Dashboard</strong></div>
+        <h1>Admin Dashboard</h1>
+        <p class="page-subtitle">Monitor accounts, reported items, administrative actions, and system communication.</p>
+      </div>
+    </div>
+
+    <section class="notice" aria-label="Administrator responsibilities">
+      <div class="notice-icon" aria-hidden="true">i</div>
+      <div class="notice-content">
+        <div class="notice-heading-row"><h2>Administrator controls</h2><span class="notice-tag">ADMIN WORKSPACE</span></div>
+        <p>Manage Student and Faculty / Staff accounts, maintain reported-item records, review administrative activity, and handle system messages and notifications.</p>
+        <p>Account records are stored in MySQL. Reported items and communication records are stored in MySQL.</p>
+      </div>
+    </section>
+
+    <section class="stats-section" aria-label="Administration overview">
+      <div class="section-heading"><div><h2>Overview</h2><p>Current system activity</p></div></div>
+      <div class="stats-grid admin-stats-grid">
+        <article class="stat-card">
+          <div class="stat-card-top"><div class="stat-icon admin-icon"><img src="{{ url_for('static', filename='shared/images/account_icon.png') }}" alt=""></div><span class="stat-category">TOTAL ACCOUNTS</span></div>
+          <div class="stat-number" id="dashboard-account-count">0</div>
+          <div class="stat-bottom"><span class="stat-label">Student and Faculty / Staff accounts</span><span class="stat-arrow" aria-hidden="true">↗</span></div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-card-top"><div class="stat-icon admin-icon"><img src="{{ url_for('static', filename='shared/images/account_icon.png') }}" alt=""></div><span class="stat-category">ACTIVE ACCOUNTS</span></div>
+          <div class="stat-number" id="dashboard-active-count">0</div>
+          <div class="stat-bottom"><span class="stat-label">Accounts currently active</span><span class="stat-arrow" aria-hidden="true">↗</span></div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-card-top"><div class="stat-icon admin-icon"><img src="{{ url_for('static', filename='shared/images/item_icon.png') }}" alt=""></div><span class="stat-category">REPORTED ITEMS</span></div>
+          <div class="stat-number" id="dashboard-item-count">0</div>
+          <div class="stat-bottom"><span class="stat-label">Lost and found item reports</span><span class="stat-arrow" aria-hidden="true">→</span></div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-card-top"><div class="stat-icon admin-icon"><img src="{{ url_for('static', filename='shared/images/action_icon.png') }}" alt=""></div><span class="stat-category">ADMIN ACTIONS</span></div>
+          <div class="stat-number" id="dashboard-audit-count">0</div>
+          <div class="stat-bottom"><span class="stat-label">Recorded audit-log actions</span><span class="stat-arrow" aria-hidden="true">→</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="recent-section">
+      <div class="section-heading recent-heading">
+        <div><h2>Recent administrative activity</h2><p>The latest account and item actions performed by an administrator.</p></div>
+        <span class="item-count" id="dashboard-recent-count">0 actions</span>
+      </div>
+      <div class="recent-list" id="dashboard-recent-list"></div>
+    </section>
+  </section>
+
+  <section class="admin-page" id="manage-accounts-panel" hidden>
+    <div class="page-intro">
+      <div>
+        <div class="breadcrumbs"><span>Admin Workspace</span><span class="breadcrumb-slash">/</span><strong>Manage Accounts</strong></div>
+        <h1>Manage Accounts</h1>
+        <p class="page-subtitle">View Student and Faculty / Staff accounts and activate or suspend them.</p>
+      </div>
+      <span class="communication-count" id="accounts-count">0 accounts</span>
+    </div>
+    <div class="admin-card">
+      <div class="toolbar">
+        <div class="toolbar-copy"><h2>Accounts</h2><p>Account ID, name, school email, creation date, last update, and current status.</p></div>
+        <div class="toolbar-actions">
+          <input class="table-search" id="account-search" type="search" placeholder="Search accounts..." aria-label="Search accounts">
+          <select class="table-filter" id="account-status-filter" aria-label="Filter accounts by status">
+            <option value="all">All statuses</option>
+            <option value="pending">Pending</option>
+            <option value="active">Active</option>
+            <option value="suspended">Suspended</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" aria-label="Account management table">
+          <thead><tr><th>Account ID</th><th>Name</th><th>Gmail</th><th>Role</th><th>Created At</th><th>Last Updated</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="accounts-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="admin-page" id="manage-items-panel" hidden>
+    <div class="page-intro">
+      <div>
+        <div class="breadcrumbs"><span>Admin Workspace</span><span class="breadcrumb-slash">/</span><strong>Manage Items</strong></div>
+        <h1>Manage Items</h1>
+        <p class="page-subtitle">Review all available lost and found reports from Students and Faculty / Staff.</p>
+      </div>
+      <span class="communication-count" id="items-count">0 items</span>
+    </div>
+    <div class="admin-card">
+      <div class="toolbar">
+        <div class="toolbar-copy"><h2>Reported Items</h2><p>Edit report details or remove an item record.</p></div>
+        <div class="toolbar-actions">
+          <input class="table-search" id="item-search" type="search" placeholder="Search items..." aria-label="Search items">
+          <select class="table-filter" id="item-type-filter" aria-label="Filter items by type">
+            <option value="all">All types</option>
+            <option value="lost">Lost</option>
+            <option value="found">Found</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table item-table" aria-label="Item management table">
+          <thead><tr><th>Item ID</th><th>Item</th><th>Type</th><th>Category</th><th>Reported By</th><th>Location</th><th>Date</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="items-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="admin-page" id="manage-categories-panel" hidden>
+    <div class="page-intro">
+      <div>
+        <div class="breadcrumbs"><span>Admin Workspace</span><span class="breadcrumb-slash">/</span><strong>Manage Categories</strong></div>
+        <h1>Manage Categories</h1>
+        <p class="page-subtitle">Maintain the database-backed category list used by Lost and Found report forms.</p>
+      </div>
+      <span class="communication-count" id="categories-count">0 categories</span>
+    </div>
+
+    <div class="admin-card category-create-card">
+      <div class="toolbar">
+        <div class="toolbar-copy"><h2>Add Category</h2><p>New active categories become available immediately in report forms.</p></div>
+      </div>
+      <form id="category-create-form" class="category-create-form">
+        <label>Category Name<input id="new-category-name" maxlength="50" placeholder="e.g. Umbrellas" required></label>
+        <label>Sort Order<input id="new-category-sort" type="number" min="0" step="1" value="0" required></label>
+        <button type="submit" class="primary-action">Add Category</button>
+      </form>
+    </div>
+
+    <div class="admin-card">
+      <div class="toolbar">
+        <div class="toolbar-copy"><h2>Category Master List</h2><p>Deactivate a category instead of deleting it so historical reports remain intact.</p></div>
+        <div class="toolbar-actions"><input class="table-search" id="category-search" type="search" placeholder="Search categories..." aria-label="Search categories"></div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" aria-label="Category management table">
+          <thead><tr><th>Category</th><th>Sort Order</th><th>Status</th><th>Created At</th><th>Updated At</th><th>Action</th></tr></thead>
+          <tbody id="categories-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="admin-page" id="audit-log-panel" hidden>
+    <div class="page-intro">
+      <div>
+        <div class="breadcrumbs"><span>Admin Workspace</span><span class="breadcrumb-slash">/</span><strong>Audit Log</strong></div>
+        <h1>Audit Log</h1>
+        <p class="page-subtitle">Review account and item actions performed by administrators.</p>
+      </div>
+      <span class="communication-count" id="audit-count">0 actions</span>
+    </div>
+    <div class="admin-card">
+      <div class="toolbar">
+        <div class="toolbar-copy"><h2>Administrative Activity</h2><p>Each action is recorded with the admin, target, action type, and timestamp.</p></div>
+        <div class="toolbar-actions">
+          <input class="table-search" id="audit-search" type="search" placeholder="Search audit log..." aria-label="Search audit log">
+          <select class="table-filter" id="audit-type-filter" aria-label="Filter audit log">
+            <option value="all">All actions</option>
+            <option value="account">Account actions</option>
+            <option value="item">Item actions</option>
+            <option value="category">Category actions</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table audit-table" aria-label="Audit log table">
+          <thead><tr><th>Timestamp</th><th>Admin</th><th>Action</th><th>Target</th><th>Details</th></tr></thead>
+          <tbody id="audit-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  {% with root="Admin Workspace", with_compose=true,
+          messages_subtitle="Read messages and send messages to any active user using their school email.",
+          notifications_subtitle="System notifications and administrative events that need attention.",
+          notifications_heading="Notifications",
+          notifications_help="Notifications generated for the administrator appear here." %}
+    {% include "partials/communication_panels.html" %}
+  {% endwith %}
+{% endblock %}
+
+{% block scripts %}
+  {% with with_compose=true %}{% include "partials/message_modals.html" %}{% endwith %}
+
+  <div class="modal" id="item-modal" hidden>
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="item-modal-title">
+      <div class="modal-header">
+        <div>
+          <span class="modal-eyebrow">EDIT ITEM</span>
+          <h2 id="item-modal-title">Edit Item</h2>
+          <p class="modal-meta">Changes are saved to the stored report.</p>
+        </div>
+        <button type="button" class="modal-close" data-close-modal="item-modal" aria-label="Close">×</button>
+      </div>
+      <form id="item-form" class="compose-form">
+        <div class="compose-grid">
+          <label>Item Name<input id="edit-item-name" required maxlength="160"></label>
+          <label>Category<select id="edit-item-category" required></select></label>
+          <label>Location<input id="edit-item-location" maxlength="160"></label>
+          <label>Date<input id="edit-item-date" type="date"></label>
+          <label>Status
+            <select id="edit-item-status">
+              <option value="pending">Pending</option>
+              <option value="verified">Verified</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+              <option value="recorded">Recorded</option>
+            </select>
+          </label>
+          <label class="compose-full">Description<textarea id="edit-item-description" maxlength="3000"></textarea></label>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="secondary-action" data-close-modal="item-modal">Cancel</button>
+          <button type="submit" class="primary-action">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="category-modal" hidden>
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="category-modal-title">
+      <div class="modal-header">
+        <div>
+          <span class="modal-eyebrow">EDIT CATEGORY</span>
+          <h2 id="category-modal-title">Edit Category</h2>
+          <p class="modal-meta">Changes are stored in the category master table.</p>
+        </div>
+        <button type="button" class="modal-close" data-close-modal="category-modal" aria-label="Close">×</button>
+      </div>
+      <form id="category-form" class="compose-form">
+        <div class="compose-grid">
+          <label>Category Name<input id="edit-category-name" maxlength="50" required></label>
+          <label>Sort Order<input id="edit-category-sort" type="number" min="0" step="1" required></label>
+          <label>Status<select id="edit-category-status"><option value="true">Active</option><option value="false">Inactive</option></select></label>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="secondary-action" data-close-modal="category-modal">Cancel</button>
+          <button type="submit" class="primary-action">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='admin/js/admin.js') }}"></script>
+{% endblock %}

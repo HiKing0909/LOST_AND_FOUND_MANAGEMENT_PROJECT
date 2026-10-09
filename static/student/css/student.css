@@ -1,0 +1,6 @@
+/* Student additions on top of the shared dashboard styles (shared/css/base.css). */
+
+/* Stat icons use the FoundIT logo on a dark-red tile, matching the sidebar. */
+.stat-icon { width: 42px; height: 42px; border-radius: 11px; background: var(--brand-red); overflow: hidden; }
+.stat-icon img { display: block; width: 22px; height: 22px; object-fit: contain; }
+.found-stat .stat-icon { background: var(--brand-red); }
