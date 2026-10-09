@@ -1,0 +1,82 @@
+{# Variables: report_subtitle, report_info #}
+<section class="report-page" id="report-lost-item" aria-labelledby="report-lost-title" hidden>
+  <div class="page-intro report-page-intro">
+    <div>
+      <div class="breadcrumbs"><span>Workspace</span><span class="breadcrumb-slash">/</span><strong>Report Lost Item</strong></div>
+      <h1 id="report-lost-title">Report Lost Item</h1>
+      <p class="page-subtitle">{{ report_subtitle }}</p>
+    </div>
+  </div>
+
+  <div class="report-card">
+    <div class="report-card-heading">
+      <div>
+        <h2>Lost item details</h2>
+        <p>Fields marked with <span class="required-mark">*</span> are required.</p>
+      </div>
+      <span class="report-badge">LOST ITEM</span>
+    </div>
+
+    <div class="report-info">
+      <div class="notice-icon" aria-hidden="true">i</div>
+      <div class="notice-content">
+        <h3>Important information</h3>
+        <p>{{ report_info }} Include important information such as the item’s color, brand, size, unique marks, contents, or other distinguishing features.</p>
+      </div>
+    </div>
+
+    <form id="lost-item-form" class="lost-item-form" novalidate>
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="item-name">Item Name <span class="required-mark">*</span></label>
+          <input id="item-name" name="item_name" type="text" placeholder="e.g. Black Wallet" maxlength="100" required>
+        </div>
+
+        <div class="form-field">
+          <label for="item-category">Category <span class="required-mark">*</span></label>
+          <select id="item-category" name="category" required>
+            {% include "partials/category_options.html" %}
+          </select>
+        </div>
+
+        <div class="form-field form-field-full">
+          <label for="item-description">Description <span class="required-mark">*</span></label>
+          <textarea id="item-description" name="description" rows="5" maxlength="1000" placeholder="Describe the item, including its color, brand, size, unique marks, contents, or other distinguishing features." required></textarea>
+          <span class="field-hint">Be as specific as possible.</span>
+        </div>
+
+        <div class="form-field form-field-full">
+          <label for="item-photo">Upload Photo <span class="optional-mark">(Optional)</span></label>
+          <div class="photo-upload">
+            <input id="item-photo" name="photo" type="file" accept="image/png,image/jpeg,image/webp" multiple>
+            <label class="photo-dropzone" for="item-photo">
+              <span class="photo-upload-icon" aria-hidden="true">↑</span>
+              <span class="photo-upload-copy">
+                <strong>Choose photos</strong>
+                <small>PNG, JPG, JPEG, WEBP · Up to 5 images</small>
+              </span>
+            </label>
+            <div id="photo-preview" class="photo-preview" aria-live="polite"></div>
+            <p id="photo-message" class="field-message" role="status"></p>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="last-seen">Where did you last see it? <span class="required-mark">*</span></label>
+          <input id="last-seen" name="last_seen" type="text" placeholder="e.g. Library" maxlength="150" required>
+        </div>
+
+        <div class="form-field">
+          <label for="date-lost">Date Lost (MM/DD/YYYY) <span class="required-mark">*</span></label>
+          <input id="date-lost" name="date_lost" type="date" required>
+          <span class="field-hint">Select the date using the calendar.</span>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="secondary-action" id="cancel-report">Cancel</button>
+        <button type="submit" class="primary-action report-submit">Submit Lost Item Report</button>
+      </div>
+    </form>
+  </div>
+</section>

@@ -1,0 +1,151 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Dashboard{% endblock %}
+{% block footer_title %}Lost and Found System{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='shared/css/report_lost_item.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='shared/css/submissions_panel.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='student/css/student.css') }}">
+{% endblock %}
+
+{% block navigation %}
+  <div class="sidebar-section-label">WORKSPACE</div>
+  <nav class="nav nav-main">
+    <a href="#dashboard" class="nav-link active" id="dashboard-nav" aria-current="page">
+      <span class="nav-icon"><img src="{{ url_for('static', filename='shared/images/home_icon.png') }}" alt=""></span>
+      <span>Dashboard</span>
+    </a>
+    <a href="#report-lost-item" class="nav-link" id="report-lost-nav">
+      <span class="nav-icon"><img src="{{ url_for('static', filename='shared/images/lost_icon.png') }}" alt=""></span>
+      <span>Report Lost Item</span>
+    </a>
+    <a href="#my-submissions" class="nav-link" id="my-submissions-nav">
+      <span class="nav-icon"><img src="{{ url_for('static', filename='shared/images/submission_icon.png') }}" alt=""></span>
+      <span>My Submissions</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section-label">COMMUNICATION</div>
+  <nav class="nav nav-secondary">
+    <a href="#messages" class="nav-link" id="messages-nav">
+      <span class="nav-icon"><img src="{{ url_for('static', filename='shared/images/message_icon.png') }}" alt=""></span>
+      <span>Messages</span>
+      <span class="nav-badge" id="messages-nav-count" aria-label="Unread messages">0</span>
+    </a>
+    <a href="#notifications" class="nav-link" id="notifications-nav">
+      <span class="nav-icon"><img src="{{ url_for('static', filename='shared/images/notification_icon.png') }}" alt=""></span>
+      <span>Notifications</span>
+      <span class="nav-badge" id="notifications-nav-count" aria-label="Notifications">0</span>
+    </a>
+  </nav>
+{% endblock %}
+
+{% block views %}
+  <section class="dashboard-view" id="dashboard-view">
+    <section class="page-intro">
+      <div>
+        <div class="breadcrumbs"><span>Workspace</span><span class="breadcrumb-slash">/</span><strong>Dashboard</strong></div>
+        <h1>Dashboard</h1>
+        <p class="page-subtitle">A clear overview of lost and found activity.</p>
+      </div>
+    </section>
+
+    <section class="notice" aria-label="Lost and found policy notice">
+      <div class="notice-icon" aria-hidden="true">i</div>
+      <div class="notice-content">
+        <div class="notice-heading-row">
+          <h2>Important information</h2>
+          <span class="notice-tag">POLICY NOTICE</span>
+        </div>
+        <p>All lost and found items, received by Faculty and Staff shall be properly documented, recorded, and securely stored upon receipt.</p>
+        <p>Items will be retained for one (1) week from the date of receipt to allow the rightful owner sufficient time to claim them. Unclaimed items may be handled in accordance with the institution's Lost and Found policies and procedures.</p>
+        <p>Students, Faculty, Staff, and other members of the school community are encouraged to promptly report and claim lost items through the Lost and Found System.</p>
+      </div>
+    </section>
+
+    <section class="stats-section" aria-label="Item summary">
+      <div class="section-heading">
+        <div>
+          <h2>Overview</h2>
+          <p>Current item status at a glance</p>
+        </div>
+      </div>
+      <div class="stats-grid">
+        <article class="stat-card lost-stat">
+          <div class="stat-card-top">
+            <div class="stat-icon"><img src="{{ url_for('static', filename='shared/images/lost_icon.png') }}" alt=""></div>
+            <span class="stat-category">LOST ITEMS</span>
+          </div>
+          <div class="stat-number" id="dashboard-lost-count">{{ stats.lost }}</div>
+          <div class="stat-bottom"><span class="stat-label">Available lost items</span><span class="stat-arrow" aria-hidden="true">↗</span></div>
+        </article>
+        <article class="stat-card found-stat">
+          <div class="stat-card-top">
+            <div class="stat-icon"><img src="{{ url_for('static', filename='shared/images/found_icon.png') }}" alt=""></div>
+            <span class="stat-category">FOUND ITEMS</span>
+          </div>
+          <div class="stat-number" id="dashboard-found-count">{{ stats.found }}</div>
+          <div class="stat-bottom"><span class="stat-label">Available found items</span><span class="stat-arrow" aria-hidden="true">↗</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="recent-section">
+      <div class="section-heading recent-heading">
+        <div>
+          <h2>Recently posted</h2>
+          <p>The latest activity from your lost and found board.</p>
+        </div>
+        <div class="recent-heading-tools">
+          <label class="recent-search" for="dashboard-recent-search">
+            <span class="sr-only">Search recently posted items by name or location</span>
+            <span class="recent-search-icon" aria-hidden="true">⌕</span>
+            <input id="dashboard-recent-search" type="search" placeholder="Search item or location" autocomplete="off">
+          </label>
+          <span class="item-count" id="dashboard-recent-count">0 items</span>
+        </div>
+      </div>
+      <div class="recent-list" id="dashboard-recent-list" aria-live="polite"></div>
+    </section>
+  </section>
+
+  {% with report_subtitle="Provide the details below so staff and other students can help identify your missing item.",
+          report_info="Please provide enough details about the item to help staff and other students easily identify and recognize it." %}
+    {% include "partials/report_lost_item_form.html" %}
+  {% endwith %}
+
+  <section class="submissions-page" id="my-submissions" aria-labelledby="my-submissions-title" hidden>
+    <div class="page-intro">
+      <div>
+        <div class="breadcrumbs"><span>Workspace</span><span class="breadcrumb-slash">/</span><strong>My Submissions</strong></div>
+        <h1 id="my-submissions-title">My Submissions</h1>
+        <p class="page-subtitle">Review and manage the lost item reports you have submitted.</p>
+      </div>
+    </div>
+    <div class="submissions-card">
+      <div class="submissions-heading">
+        <div>
+          <h2>Your reported items</h2>
+          <p>Reports are saved securely in the FoundIT database.</p>
+        </div>
+        <span class="item-count" id="submission-count">0 items</span>
+      </div>
+      <div id="submissions-list" class="submissions-list" aria-live="polite"></div>
+    </div>
+  </section>
+
+  {% with root="Workspace", with_compose=false,
+          messages_subtitle="Messages received from Faculty, Staff, and Admin users.",
+          notifications_subtitle="Updates about the lost item reports you submitted.",
+          notifications_heading="Report updates",
+          notifications_help="You will see here when Faculty or Staff verify or reject a reported lost item." %}
+    {% include "partials/communication_panels.html" %}
+  {% endwith %}
+{% endblock %}
+
+{% block scripts %}
+  {% with with_compose=false %}{% include "partials/message_modals.html" %}{% endwith %}
+  <script src="{{ url_for('static', filename='student/js/student.js') }}"></script>
+{% endblock %}

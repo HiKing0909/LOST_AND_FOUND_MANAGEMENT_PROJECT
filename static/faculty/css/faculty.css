@@ -1,0 +1,146 @@
+/* Faculty / Staff additions on top of the shared dashboard styles (shared/css/base.css). */
+.staff-stats-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.staff-stats-grid .stat-icon { background: var(--brand-red); color: #fff; overflow: hidden; }
+.staff-stats-grid .stat-icon img { display: block; width: 29px; height: 19px; object-fit: contain; }
+.staff-page, .dashboard-view { min-width: 0; }
+.staff-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 24px; }
+.staff-card-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+.staff-card-heading h2 { color: var(--ink); font-size: 20px; font-weight: 750; }
+.staff-card-heading p { margin-top: 5px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+.review-list { display: grid; gap: 12px; }
+.review-item { padding: 18px; border: 1px solid #e7e9ed; border-radius: 12px; background: #fff; }
+.review-item-content { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 18px; align-items: start; }
+.review-item-visual { width: 112px; height: 112px; }
+.review-photo { display: block; width: 112px; height: 112px; border: 1px solid #e5e8ec; border-radius: 12px; object-fit: cover; background: #f5f6f8; }
+.review-photo-fallback { display: grid; place-items: center; color: var(--brand-red); background: #fff5f5; font-size: 38px; font-weight: 800; }
+.review-item-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
+.review-item-top h3 { margin-top: 5px; color: #252a31; font-size: 18px; font-weight: 750; }
+.review-item-top time { color: #8b929b; font-size: 13px; white-space: nowrap; }
+.review-type { display: inline-flex; padding: 5px 10px; border-radius: 999px; background: #fff1f2; color: var(--brand-red); font-size: 12px; font-weight: 800; letter-spacing: .7px; }
+.review-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 12px 0 10px; color: #707984; font-size: 13px; }
+.review-item > p { color: #68717c; font-size: 14px; line-height: 1.7; }
+.review-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 15px; padding-top: 13px; border-top: 1px solid #eef0f2; }
+@media (max-width: 650px) {
+  .review-item-content { grid-template-columns: 78px minmax(0, 1fr); gap: 12px; }
+  .review-item-visual, .review-photo { width: 78px; height: 78px; }
+  .review-photo-fallback { font-size: 28px; }
+  .review-item-top { gap: 10px; }
+  .review-item-top time { font-size: 11px; }
+}
+.activity-item { width: 100%; display: grid; grid-template-columns: auto minmax(0,1fr) auto auto; align-items: center; gap: 13px; padding: 13px 15px; border: 1px solid #e7e9ed; border-radius: 11px; background: #fff; color: inherit; text-align: left; cursor: pointer; }
+.activity-item:hover { border-color: #d7dbe1; background: #fcfcfd; }
+.activity-type { color: var(--brand-red); font-size: 12px; font-weight: 800; letter-spacing: .6px; }
+.activity-copy { min-width: 0; display: grid; gap: 4px; }
+.activity-copy strong { overflow: hidden; color: #3e454e; font-size: 15px; text-overflow: ellipsis; white-space: nowrap; }
+.activity-copy small { color: #8a919a; font-size: 13px; }
+.activity-item time { color: #9298a0; font-size: 12px; white-space: nowrap; }
+.activity-arrow { color: var(--brand-red); font-size: 15px; font-weight: 700; }
+.staff-submission-item { position: relative; }
+.status-badge { display: inline-flex; margin-top: 10px; padding: 5px 11px; border-radius: 999px; font-size: 12px; font-weight: 800; }
+.status-badge.pending { background: #fff7df; color: #9b7410; }
+.status-badge.verified, .status-badge.accepted { background: #eaf8f1; color: #19764c; }
+.status-badge.rejected { background: #fff0f1; color: var(--brand-red); }
+.found-badge { background: #eef8ff !important; color: #087fc2 !important; }
+.found-submit { background: var(--blue) !important; border-color: var(--blue) !important; }
+@media (max-width: 1100px) { .staff-stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .staff-card { padding: 17px; } .staff-card-heading { align-items: flex-start; flex-direction: column; } .staff-stats-grid { grid-template-columns: 1fr; } .activity-item { grid-template-columns: auto minmax(0,1fr) auto; } .activity-item time { display: none; } }
+
+/* Verified lost-item thumbnails in the shared public activity feed. */
+.activity-item { grid-template-columns: 42px auto minmax(0,1fr) auto auto; }
+.activity-image { display:grid; width:42px; height:42px; place-items:center; overflow:hidden; border:1px solid #e5e8ec; border-radius:8px; object-fit:cover; background:#f5f6f8; }
+.activity-image-fallback { color:var(--brand-red); background:#fff5f5; font-size:17px; font-weight:750; }
+@media (max-width:760px) {
+  .activity-item { grid-template-columns:42px minmax(0,1fr) auto; }
+  .activity-type { display:none; }
+}
+/* Faculty review action notice */
+.action-notice-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(18, 22, 29, 0.48);
+  backdrop-filter: blur(3px);
+}
+.action-notice-overlay[hidden] { display: none; }
+.action-notice-modal {
+  width: min(440px, 100%);
+  padding: 30px 30px 26px;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.20);
+  text-align: center;
+}
+.action-notice-icon {
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 16px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #eaf7ef;
+  color: #237a45;
+  font-size: 28px;
+  font-weight: 800;
+}
+.action-notice-icon.is-rejected {
+  background: #fff0f0;
+  color: #b42318;
+}
+.action-notice-modal h2 { margin: 0 0 9px; font-size: 21px; }
+.action-notice-modal p { margin: 0 0 22px; color: #606873; font-size: 14px; line-height: 1.6; }
+.action-notice-close { min-width: 118px; }
+@media (max-width: 520px) {
+  .action-notice-modal { padding: 25px 20px 22px; }
+}
+
+/* Faculty review confirmation dialog */
+.action-notice-actions { display:flex; justify-content:center; gap:10px; margin-top:2px; }
+.action-notice-actions button { min-width:120px; }
+.action-notice-actions .is-danger { background:#b42318; border-color:#b42318; color:#fff; }
+.action-notice-actions .is-danger:hover { background:#941d14; border-color:#941d14; }
+
+/* Claim lifecycle: pending -> approved -> returned.
+   Approved and Returned cards intentionally reuse the same review-item layout as
+   Pending Claim Requests so the whole Manage Claims page stays balanced and easy
+   to scan during daily use or a project demonstration. */
+.claim-workflow-card { margin-top: 18px; }
+.claim-workflow-card:first-of-type { margin-top: 0; }
+.claim-section-label { display:inline-flex; align-items:center; justify-content:center; min-width:78px; padding:6px 11px; border-radius:999px; font-size:11px; font-weight:850; letter-spacing:.7px; }
+.claim-section-label.approved { background:#eaf8f1; color:#19764c; }
+.claim-section-label.returned { background:#eef8ff; color:#087fc2; }
+.claim-state-badge.accepted { background:#eaf8f1; color:#19764c; }
+.claim-state-badge.returned { background:#eef8ff; color:#087fc2; }
+.claim-history-item { position:relative; overflow:hidden; }
+.claim-history-item.claim-accepted { border-color:#d9eee3; }
+.claim-history-item.claim-returned { border-color:#d8eaf5; }
+.claim-history-item .review-item-content { min-height:112px; }
+.claim-history-item .review-actions { align-items:center; }
+.claim-history-item .review-actions .primary-action { min-width:178px; }
+.claim-history-item .review-actions .secondary-action { min-width:110px; }
+.claim-history-item .review-actions .secondary-action + .primary-action { min-width:110px; }
+.claim-return-meta { display:inline-flex; align-items:center; gap:5px; margin-top:10px; padding:6px 10px; border-radius:8px; background:#f6f8fa; color:#5f6872; font-size:13px; }
+.claim-return-meta strong { color:#303640; }
+.claim-return-meta.claim-receipt-no { margin-right:8px; background:#eef8ff; color:#087fc2; font-weight:700; }
+.returned-claims-toolbar { margin-bottom:14px; }
+.returned-claims-toolbar input { width:100%; max-width:380px; min-height:40px; padding:0 14px; border:1px solid #dfe3e8; border-radius:8px; font:inherit; font-size:14px; }
+.claim-section-approved .review-list,
+.claim-section-returned .review-list { min-height:0; }
+@media (max-width: 650px) {
+  .claim-section-label { min-width:70px; }
+  .claim-history-item .review-actions .primary-action { width:100%; min-width:0; }
+}
+
+/* Receipt review (preview) dialog */
+.receipt-preview-overlay { position:fixed; inset:0; z-index:1100; display:grid; place-items:center; padding:20px; background:rgba(18,22,29,.52); backdrop-filter:blur(3px); }
+.receipt-preview-overlay[hidden] { display:none; }
+.receipt-preview-modal { width:min(420px,100%); max-height:96vh; overflow-y:auto; padding:24px 24px 20px; border-radius:16px; background:#fff; box-shadow:0 20px 55px rgba(0,0,0,.22); text-align:center; }
+.receipt-preview-modal h2 { margin:0 0 6px; font-size:20px; }
+.receipt-preview-modal p { margin:0 0 14px; color:#606873; font-size:13px; }
+.receipt-preview-frame-wrap { display:flex; justify-content:center; padding:16px 0; border-radius:10px; background:#e9ebee; }
+.receipt-preview-frame { width:90mm; height:90mm; max-width:100%; border:0; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.25); }
+.receipt-preview-actions { display:flex; justify-content:center; gap:10px; margin-top:16px; }
+.receipt-preview-actions button { min-width:110px; }

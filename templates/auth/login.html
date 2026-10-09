@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FoundIT Login — UM Tagum Campus Lost and Found System">
+  <title>FoundIT | Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='auth/auth.css') }}">
+</head>
+<body class="auth-page auth-page-login">
+  <main class="auth-shell">
+    <section class="brand-panel" aria-label="FoundIT information">
+      <div class="brand-panel-inner">
+        <img class="foundit-logo" src="{{ url_for('static', filename='auth/assets/horizontal_logo.png') }}" alt="FoundIT Campus Lost and Found System">
+        <span class="eyebrow">UM Tagum Campus</span>
+        <h1>Find it. Verify it. Return it.</h1>
+        <p>Access FoundIT to report lost belongings, browse verified found items, and manage your submissions.</p>
+      </div>
+    </section>
+
+    <section class="auth-card" aria-labelledby="login-title">
+      <div class="card-glow" aria-hidden="true"></div>
+      <div class="auth-card-content">
+        <div class="mobile-brand">
+          <img src="{{ url_for('static', filename='auth/assets/horizontal_logo.png') }}" alt="FoundIT">
+          <span>UM Tagum Campus</span>
+        </div>
+
+        <div class="auth-heading">
+          <span class="section-label">WELCOME BACK</span>
+          <h2 id="login-title">Login to FoundIT</h2>
+          <p>Use your UMindanao school email and account password. You will be taken to the dashboard that matches your account.</p>
+        </div>
+
+        <form class="auth-form" id="login-form" data-action="{{ url_for('login_submit') }}" novalidate>
+          <div class="field-group">
+            <label for="login-email">School Email</label>
+            <div class="input-wrap">
+              <span class="input-icon" aria-hidden="true">@</span>
+              <input id="login-email" name="email" type="email" autocomplete="username"
+                     placeholder="firstname.lastname.123456.tc@umindanao.edu.ph" required>
+            </div>
+            <small class="field-message" data-message-for="login-email"></small>
+          </div>
+
+          <div class="field-group">
+            <label for="login-password">Password</label>
+            <div class="input-wrap">
+              <span class="input-icon" aria-hidden="true">●</span>
+              <input id="login-password" name="password" type="password" autocomplete="current-password"
+                     placeholder="Enter your password" required>
+              <button class="password-toggle" type="button" data-toggle-password="login-password" aria-label="Show password">Show</button>
+            </div>
+            <small class="field-message" data-message-for="login-password"></small>
+          </div>
+
+          <button class="primary-button" type="submit">Login</button>
+          <p class="form-status" id="login-status" role="status" aria-live="polite"></p>
+        </form>
+
+        <div class="auth-switch">
+          <span>Don't have an account?</span>
+          <a href="{{ url_for('create_account') }}">Create Account</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='auth/auth.js') }}" defer></script>
+</body>
+</html>

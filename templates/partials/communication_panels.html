@@ -1,0 +1,49 @@
+{#
+  Messages and Notifications panels.
+  Variables: root (breadcrumb root), messages_subtitle, with_compose,
+             notifications_subtitle, notifications_heading, notifications_help
+#}
+<section class="communication-page messages-page" id="messages-panel" aria-labelledby="messages-title" hidden>
+  <div class="page-intro">
+    <div>
+      <div class="breadcrumbs"><span>{{ root }}</span><span class="breadcrumb-slash">/</span><strong>Messages</strong></div>
+      <h1 id="messages-title">Messages</h1>
+      <p class="page-subtitle">{{ messages_subtitle }}</p>
+    </div>
+    <span class="communication-count" id="messages-count">0 messages</span>
+  </div>
+  <div class="communication-card">
+    <div class="communication-heading">
+      <div>
+        <h2>Messages</h2>
+        <p>Open a message to read it and mark it as read{% if with_compose %}, or send a message using the recipient's school email{% endif %}.</p>
+      </div>
+      <div class="communication-heading-actions">
+        <span class="unread-count" id="messages-unread-count">0 unread</span>
+        {% if with_compose %}<button type="button" class="primary-action" id="compose-message-button">Compose Message</button>{% endif %}
+      </div>
+    </div>
+    <div class="messages-list" id="messages-list" aria-live="polite"></div>
+  </div>
+</section>
+
+<section class="communication-page notifications-page" id="notifications-panel" aria-labelledby="notifications-title" hidden>
+  <div class="page-intro">
+    <div>
+      <div class="breadcrumbs"><span>{{ root }}</span><span class="breadcrumb-slash">/</span><strong>Notifications</strong></div>
+      <h1 id="notifications-title">Notifications</h1>
+      <p class="page-subtitle">{{ notifications_subtitle }}</p>
+    </div>
+    <span class="communication-count" id="notifications-count">0 notifications</span>
+  </div>
+  <div class="communication-card">
+    <div class="communication-heading">
+      <div>
+        <h2>{{ notifications_heading }}</h2>
+        <p>{{ notifications_help }}</p>
+      </div>
+      <button type="button" class="secondary-action notifications-mark-read" id="notifications-mark-read">Mark as Read</button>
+    </div>
+    <div class="notifications-list" id="notifications-list" aria-live="polite"></div>
+  </div>
+</section>
